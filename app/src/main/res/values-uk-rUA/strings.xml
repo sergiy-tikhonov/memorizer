@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="dictionary">Словник</string>
+    <string name="dictionary_code">Код словника</string>
+    <string name="dictionary_name">Назва словника</string>
+    <string name="dictionary_description">Додатковий опис</string>
+    <string name="save">Зберігти</string>
+    <string name="google_docs_text">Експорт з Google Docs (Текст)</string>
+    <string name="google_docs_words">Експорт з Google Docs (Слова)</string>
+    <string name="manual">Ручне занесення</string>
+    <string name="edit">Змінити</string>
+    <string name="delete">Видалити</string>
+    <string name="list">Список</string>
+    <string name="train">Навчання</string>
+    <string name="next">Наступний</string>
+    <string name="show_answer">Показати відповідь</string>
+    <string name="answer">Відповідь</string>
+    <string name="question">Питання</string>
+    <string name="sync">Синхронізувати</string>
+    <string name="load_questions_from_google_drive">Завантажити з Google Drive</string>
+    <string name="items_count">Кількість елементів: %d</string>
+    <string name="confirm_delete_item">Are you sure you want delete item?</string>
+    <string name="yes">Yes</string>
+    <string name="cancel">Cancel</string>
+</resources>

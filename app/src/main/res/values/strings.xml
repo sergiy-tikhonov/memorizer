@@ -1,3 +1,26 @@
 <resources>
-    <string name="app_name">memorizer</string>
+    <string name="app_name" translatable="false">memorizer</string>
+    <string name="dictionary">Dictionary</string>
+    <string name="dictionary_code">Dictionary code</string>
+    <string name="dictionary_name">Dictionary name</string>
+    <string name="dictionary_description">Dictionary description</string>
+    <string name="save">Save</string>
+    <string name="document_id" translatable="false">Google Docs Id</string>
+    <string name="google_docs_text">Export from Google Docs (Text)</string>
+    <string name="google_docs_words">Export form Google Docs (Words)</string>
+    <string name="manual">Manual input</string>
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
+    <string name="list">List</string>
+    <string name="train">Train</string>
+    <string name="next">Next</string>
+    <string name="show_answer">Show answer</string>
+    <string name="answer">Answer</string>
+    <string name="question">Question</string>
+    <string name="sync">Sync</string>
+    <string name="load_questions_from_google_drive">Load from Google Drive</string>
+    <string name="items_count">Items count: %d</string>
+    <string name="confirm_delete_item">Are you sure you want delete item?</string>
+    <string name="yes">Yes</string>
+    <string name="cancel">Cancel</string>
 </resources>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="dictionary">Словарь</string>
+    <string name="dictionary_code">Код словаря</string>
+    <string name="dictionary_name">Имя словаря</string>
+    <string name="dictionary_description">Описание</string>
+    <string name="save">Сохранить</string>
+    <string name="google_docs_text">Экспорт из Google Docs (Текст)</string>
+    <string name="google_docs_words">Экспорт из Google Docs (Слова)</string>
+    <string name="manual">Ручной ввод</string>
+    <string name="edit">Редактировать</string>
+    <string name="delete">Удалить</string>
+    <string name="list">Список</string>
+    <string name="train">Обучение</string>
+    <string name="next">Следующий</string>
+    <string name="show_answer">Показать ответ</string>
+    <string name="answer">Ответ</string>
+    <string name="question">Вопрос</string>
+    <string name="sync">Синхронизировать</string>
+    <string name="load_questions_from_google_drive">Загрузить из Google Drive</string>
+    <string name="items_count">Количество элементов: %d</string>
+    <string name="confirm_delete_item">Are you sure you want delete item?</string>
+    <string name="yes">Yes</string>
+    <string name="cancel">Cancel</string>
+</resources>
