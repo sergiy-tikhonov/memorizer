@@ -21,6 +21,7 @@ import com.tikhonov.memorizer.data.Question
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.util.*
+import javax.inject.Inject
 
 object GoogleDocsManager {
 
@@ -136,11 +137,85 @@ object GoogleDocsManager {
          } else run.content*/
     }
 
-    suspend fun loadDocument(db: AppDatabase, documentId: String, dictionaryId: Int) {
-
+    suspend fun loadDocumentWords(documentId: String, dictionaryId: Int): List<Question> {
+        val questionList = mutableListOf<Question>()
         withContext(Dispatchers.IO) {
 
-            db.questionDAO().deleteQuestions()
+            val doc: Document = googleDocsService!!.documents()[documentId].execute()
+
+            val tables = doc.body.content.filter { it.table != null }
+
+            for ((tableIndex, currentTable) in tables.withIndex()) {
+
+                val question = Question(dictionaryId = dictionaryId)
+                for ((rowIndex, row) in currentTable.table.tableRows.withIndex()) {
+
+                    //val _number = 0
+                    //val _question = ""
+                    //val _answer = ""
+                    val _number = row.tableCells[0].content[0].paragraph.elements[0].textRun.content.replace("\n", "").trim()
+                    val _question = row.tableCells[1].content[0].paragraph.elements[0].textRun.content.replace("\n", "").trim()
+                    val _answer = row.tableCells[2].content[0].paragraph.elements[0].textRun.content.replace("\n", "").trim()
+                    val question = Question(dictionaryId = dictionaryId)
+                    question.id = _number
+                    question.title = _question
+                    question.answer = _answer
+                    //db.questionDAO().insertQuestion(question)
+                    questionList.add(question)
+                    //Log.v("DEBUG", "words: $_number $_question  $_answer")
+
+
+                   /* var currentText = ""
+                    var isList = false
+                    var isListItem = false
+                    for (currentLine in row.tableCells)
+                        for (currentTextLine in currentLine.content) {
+                            //for (currentLine in row.tableCells[0].content) {
+
+                            isListItem = currentTextLine.paragraph.containsKey("bullet")
+                            for (currentTextParagraph in currentTextLine.paragraph.elements) {
+                                val someText = readParagraphElement(currentTextParagraph)
+                                if (!isList && isListItem) currentText += "<ul>"
+                                if (isListItem) {
+                                    currentText += "<li> $someText</li>"
+                                    isList = true
+                                }
+                                else
+                                {
+                                    currentText += someText
+                                    if (isList) currentText += "</ul>"
+                                    isList = false
+                                }
+                                Log.v("TestExample", "Text: ${someText}")
+                            }
+
+                        }
+
+                    when(rowIndex) {
+                        0 -> question.title = currentText
+                        1 -> question.answer = currentText
+                        3 -> question.link = currentText
+                        4 -> question.dateAdded = currentText
+                        5 -> question.id = currentText*/
+                    }
+
+
+
+                }
+
+
+
+            }
+        return questionList
+
+        //}
+    }
+
+    suspend fun loadDocumentText(documentId: String, dictionaryId: Int): List<Question> {
+
+        val questionList = mutableListOf<Question>()
+
+        withContext(Dispatchers.IO) {
 
             val doc: Document = googleDocsService!!.documents()[documentId].execute()
 
@@ -197,12 +272,15 @@ object GoogleDocsManager {
 
                 }
 
-                db.questionDAO().insertQuestion(question)
+                questionList.add(question)
+                //db.questionDAO().insertQuestion(question)
 
             }
 
+
         }
 
+        return questionList
     }
 
 }

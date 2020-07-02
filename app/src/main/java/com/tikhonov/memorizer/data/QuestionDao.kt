@@ -29,5 +29,6 @@ interface QuestionDao {
     @Query("select * from question where id =:id")
     suspend fun getQuestion(id: String): Question?
 
-
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertQuestionMark(questionMark: QuestionMark)
 }

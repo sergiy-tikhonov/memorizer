@@ -5,16 +5,19 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.fragment.app.Fragment
 import com.tikhonov.memorizer.ui.dictionary.DictionaryListFragment
+import dagger.hilt.android.AndroidEntryPoint
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 const val REQUEST_CODE_SIGN_IN = 1
 const val REQUEST_CODE_OPEN_DOCUMENT = 2
 
+@AndroidEntryPoint
 class SingleActivity : AppCompatActivity(), FragmentNavigator, GoogleDocsManager.GoogleDocsManagerListener {
 
-    val mainViewModel: SingleActivityViewModel by viewModel()
+    val mainViewModel: SingleActivityViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

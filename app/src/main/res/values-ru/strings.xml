@@ -19,7 +19,10 @@
     <string name="sync">Синхронизировать</string>
     <string name="load_questions_from_google_drive">Загрузить из Google Drive</string>
     <string name="items_count">Количество элементов: %d</string>
-    <string name="confirm_delete_item">Are you sure you want delete item?</string>
-    <string name="yes">Yes</string>
-    <string name="cancel">Cancel</string>
+    <string name="confirm_delete_item">Вы уверены что хотите удалить элемент?</string>
+    <string name="yes">Да</string>
+    <string name="cancel">Отмена</string>
+    <string name="dictionary_list">Список словарей</string>
+    <string name="mark_answer">Оценить ответ</string>
+    <string name="question_list">Список вопросов</string>
 </resources>

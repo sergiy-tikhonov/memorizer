@@ -5,8 +5,9 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import com.tikhonov.memorizer.R
 
-@Database(entities = [Question::class, Dictionary::class], version = 7)
+@Database(entities = [Question::class, Dictionary::class, QuestionMark::class], version = 8)
 @TypeConverters(DataConverter::class, DictionaryTypeConverter::class)
 abstract class AppDatabase: RoomDatabase() {
 
@@ -26,7 +27,7 @@ abstract class AppDatabase: RoomDatabase() {
                         Room.databaseBuilder(
                             context.applicationContext,
                             AppDatabase::class.java,
-                            "memorizer"
+                            context.getString(R.string.app_name)
                         )
                         .fallbackToDestructiveMigration()
                         .build()

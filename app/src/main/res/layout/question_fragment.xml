@@ -16,36 +16,43 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:title="Question" />
+        app:title="@string/question" />
 
 
     <Button
         android:id="@+id/buttonNextQuestion"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:text="@string/next"
-        app:layout_constraintBottom_toTopOf="@+id/guideline"
         app:layout_constraintEnd_toStartOf="@+id/buttonShowAnswer"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="@+id/startVerticalGuideline"
-        app:layout_constraintTop_toBottomOf="@id/toolbar" />
+        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
     <Button
         android:id="@+id/buttonShowAnswer"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
         android:text="@string/show_answer"
-        app:layout_constraintBottom_toTopOf="@+id/guideline"
-        app:layout_constraintEnd_toStartOf="@+id/endVerticalGuideLine"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/buttonNextQuestion"
-        app:layout_constraintTop_toBottomOf="@id/toolbar" />
+        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+
+    <Button
+        android:id="@+id/buttonMarkAnswer"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/mark_answer"
+        app:layout_constraintEnd_toStartOf="@+id/endVerticalGuideLine"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/buttonShowAnswer"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="44dp"
+        android:layout_marginTop="16dp"
         android:text="@string/question"
         android:textSize="14sp"
         app:layout_constraintStart_toStartOf="@+id/startVerticalGuideline"
@@ -56,27 +63,29 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        tools:text="Пример вопроса"
         android:textSize="14sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@+id/endVerticalGuideLine"
         app:layout_constraintStart_toStartOf="@+id/startVerticalGuideline"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintTop_toBottomOf="@+id/textView"
+        tools:text="Пример вопроса" />
 
     <TextView
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="12dp"
         android:text="@string/answer"
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="@+id/startVerticalGuideline"
-        app:layout_constraintTop_toBottomOf="@+id/textViewTitle" />
+        app:layout_constraintTop_toBottomOf="@+id/ratingAnswer" />
 
     <ScrollView
+        android:id="@+id/scrollViewAnswer"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/endVerticalGuideLine"
         app:layout_constraintStart_toStartOf="@+id/startVerticalGuideline"
         app:layout_constraintTop_toBottomOf="@+id/textView2">
@@ -84,11 +93,11 @@
 
         <TextView
             android:id="@+id/textViewAnswer"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:justificationMode="inter_word"
-            tools:text="Пример ответа"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            tools:text="Пример ответа" />
 
     </ScrollView>
 
@@ -112,6 +121,21 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintGuide_end="16dp" />
+
+    <RatingBar
+        android:id="@+id/ratingAnswer"
+        style="@style/Widget.AppCompat.RatingBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:clickable="true"
+        android:indeterminate="false"
+        android:numStars="5"
+        android:rating="1"
+        android:stepSize="1"
+        app:layout_constraintEnd_toStartOf="@+id/endVerticalGuideLine"
+        app:layout_constraintStart_toStartOf="@+id/startVerticalGuideline"
+        app:layout_constraintTop_toBottomOf="@+id/textViewTitle" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

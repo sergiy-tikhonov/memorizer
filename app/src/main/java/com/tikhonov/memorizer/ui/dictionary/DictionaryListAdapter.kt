@@ -19,6 +19,7 @@ class DictionaryListAdapter(val listener: OnClickListener): RecyclerView.Adapter
         fun onEdit(dictionary: Dictionary)
         fun onDelete(dictionary: Dictionary)
         fun onTrain(dictionary: Dictionary)
+        fun onList(dictionary: Dictionary)
     }
 
     private var items = mutableListOf<DictionaryWithQuestions>()
@@ -51,6 +52,9 @@ class DictionaryListAdapter(val listener: OnClickListener): RecyclerView.Adapter
             }
             buttonDelete.setOnClickListener {
                 listener.onDelete(items[position].dictionary)
+            }
+            buttonList.setOnClickListener {
+                listener.onList(items[position].dictionary)
             }
             buttonTrain.setOnClickListener {
                 listener.onTrain(items[position].dictionary)

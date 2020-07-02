@@ -23,4 +23,7 @@
     <string name="confirm_delete_item">Are you sure you want delete item?</string>
     <string name="yes">Yes</string>
     <string name="cancel">Cancel</string>
+    <string name="dictionary_list">Dictionary List</string>
+    <string name="mark_answer">Mark answer</string>
+    <string name="question_list">Questions list</string>
 </resources>

@@ -9,15 +9,20 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.tikhonov.memorizer.*
-import com.tikhonov.memorizer.data.AppDatabase
 import com.tikhonov.memorizer.data.Dictionary
 import com.tikhonov.memorizer.data.DictionaryType
 import com.tikhonov.memorizer.ui.question.QuestionFragment
+import com.tikhonov.memorizer.ui.question.QuestionListFragment
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.dictionary_list_fragment.*
 import kotlinx.android.synthetic.main.dictionary_list_fragment.toolbar
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 
-class DictionaryListFragment : Fragment() , DictionaryListAdapter.OnClickListener{
+@AndroidEntryPoint
+class DictionaryListFragment : BaseFragment() , DictionaryListAdapter.OnClickListener{
 
     companion object {
         fun newInstance() =
@@ -34,14 +39,19 @@ class DictionaryListFragment : Fragment() , DictionaryListAdapter.OnClickListene
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.menuItemSync) {
-
-                val dictionariesWithGoogleText = viewModel.dictionaryList.value?.filter { it.dictionary.dictionaryType == DictionaryType.GOOGLE_DOCS_TEXT }
+            val dictionariesWithGoogleText = viewModel.dictionaryList.value?.filter { it.dictionary.dictionaryType == DictionaryType.GOOGLE_DOCS_TEXT }
                 dictionariesWithGoogleText?.let {
                     for (dictionary in it) {
-                        viewModel.syncDictionary(AppDatabase.getInstance(requireContext()), dictionary.dictionary)
+                        viewModel.syncDictionaryText(dictionary.dictionary)
                     }
                 }
-
+            val dictionariesWithGoogleWords = viewModel.dictionaryList.value?.filter { it.dictionary.dictionaryType == DictionaryType.GOOGLE_DOCS_WORDS }
+            dictionariesWithGoogleWords?.let {
+                for (dictionary in it) {
+                    Log.v("DEBUG", "dictionary with words: $dictionary")
+                    viewModel.syncDictionaryWords(dictionary.dictionary)
+                }
+            }
         }
         return true
     }
@@ -50,17 +60,10 @@ class DictionaryListFragment : Fragment() , DictionaryListAdapter.OnClickListene
         menuInflater.inflate(R.menu.dictionary_list_menu, menu)
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setHasOptionsMenu(true)
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
         super.onViewCreated(view, savedInstanceState)
-        val parentActivity = requireActivity() as SingleActivity
-        parentActivity.setSupportActionBar(toolbar)
-
+        super.setToolbar(toolbar = toolbar, showUpNavigation = false, showMenu = true)
 
         val dictionaryListAdapter =
             DictionaryListAdapter(this)
@@ -106,6 +109,16 @@ class DictionaryListFragment : Fragment() , DictionaryListAdapter.OnClickListene
         parentActivity.replaceFragment(questionFragment)
     }
 
+    override fun onList(dictionary: Dictionary) {
+        val parentActivity = requireActivity() as SingleActivity
+        val questionListFragment =
+            QuestionListFragment.newInstance()
+        val bundle = Bundle()
+        bundle.putInt("dictionaryId", dictionary.id)
+        questionListFragment.arguments = bundle
+        parentActivity.replaceFragment(questionListFragment)
+    }
+
 
 
     override fun onDelete(dictionary: Dictionary) {
@@ -114,8 +127,7 @@ class DictionaryListFragment : Fragment() , DictionaryListAdapter.OnClickListene
             .setCancelable(false)
         builder.setPositiveButton(getString(R.string.yes))
          { dialog, _ ->
-            val db = AppDatabase.getInstance(requireContext())
-            viewModel.deleteDictionary(db, dictionary)
+             viewModel.deleteDictionary(dictionary)
             dialog.cancel()
         }
         builder.setNegativeButton(getString(R.string.cancel))

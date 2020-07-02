@@ -1,7 +1,6 @@
 package com.tikhonov.memorizer.data
 
 import androidx.room.Entity
-import androidx.room.PrimaryKey
 
 @Entity(tableName = "question", primaryKeys = ["id", "dictionaryId"])
 data class Question (

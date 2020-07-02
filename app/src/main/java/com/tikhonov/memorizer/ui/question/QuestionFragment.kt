@@ -9,16 +9,21 @@ import android.widget.Toast
 import androidx.core.text.HtmlCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import com.tikhonov.memorizer.data.AppDatabase
 import kotlinx.android.synthetic.main.question_fragment.*
 import androidx.fragment.app.viewModels
+import com.tikhonov.memorizer.BaseFragment
 import com.tikhonov.memorizer.EventObserver
 import com.tikhonov.memorizer.R
+import com.tikhonov.memorizer.SingleActivity
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.synthetic.main.question_fragment.toolbar
+import kotlinx.android.synthetic.main.toolbar.*
 
 
-class QuestionFragment : Fragment() {
+@AndroidEntryPoint
+class QuestionFragment : BaseFragment() {
 
-    val viewModel: QuestionViewModel by viewModels()
+    private val viewModel: QuestionViewModel by viewModels()
 
     companion object {
         fun newInstance() = QuestionFragment()
@@ -27,23 +32,30 @@ class QuestionFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
         super.onViewCreated(view, savedInstanceState)
-        val db = AppDatabase.getInstance(requireContext())
+        super.setToolbar(toolbar = toolbar, showUpNavigation = true, showMenu = false)
 
         arguments?.let {
-            viewModel.getQuestions(db, requireArguments().getInt("dictionaryId"))
+            viewModel.getQuestions(requireArguments().getInt("dictionaryId"))
         }
 
         buttonNextQuestion.setOnClickListener {
-            nextQuestion()
+            viewModel.nextQuestion()
         }
 
         buttonShowAnswer.setOnClickListener {
-            showAnswer()
+            viewModel.showAnswer()
+        }
+
+        buttonMarkAnswer.setOnClickListener {
+            viewModel.markAnswer(ratingAnswer.rating.toInt())
         }
 
         viewModel.question.observe(viewLifecycleOwner, Observer {
             textViewTitle.text = HtmlCompat.fromHtml(it.title, HtmlCompat.FROM_HTML_MODE_COMPACT)
             textViewAnswer.text = HtmlCompat.fromHtml(it.answer, HtmlCompat.FROM_HTML_MODE_COMPACT)
+        })
+        viewModel.showAnswer.observe(viewLifecycleOwner, Observer {
+            scrollViewAnswer.visibility = if (it) View.VISIBLE else View.INVISIBLE
         })
         viewModel.message.observe(viewLifecycleOwner,
             EventObserver {
@@ -61,15 +73,6 @@ class QuestionFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.question_fragment, container, false)
-    }
-
-
-    fun nextQuestion() {
-        viewModel.nextQuestion()
-    }
-
-    fun showAnswer(){
-        viewModel.showAnswer()
     }
 
 /*    override fun onActivityResult(requestCode: Int, resultCode: Int, resultData: Intent?) {
