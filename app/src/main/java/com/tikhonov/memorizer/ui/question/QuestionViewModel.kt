@@ -24,10 +24,13 @@ class QuestionViewModel @ViewModelInject constructor(val questionRepository: Que
     val message = MutableLiveData(Event(""))
 
     //fun getQuestions(db: AppDatabase, dictionaryId: Int) {
-    fun getQuestions(dictionaryId: Int) {
+    fun getQuestions(dictionaryId: Int, questionId: String? = null) {
         viewModelScope.launch {
             questions = questionRepository.getAllQuestions(dictionaryId)
-            nextQuestion()
+            if (questionId == null)
+                nextQuestion()
+            else
+                question.postValue(questions.find { it.id == questionId })
         }
     }
 

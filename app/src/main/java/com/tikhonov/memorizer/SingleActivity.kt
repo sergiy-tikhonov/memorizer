@@ -23,11 +23,18 @@ class SingleActivity : AppCompatActivity(), FragmentNavigator, GoogleDocsManager
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_single)
 
-        mainViewModel.googleSignInClient = GoogleDocsManager.getGoogleSignInClient(this)
-        startActivityForResult(mainViewModel.googleSignInClient.signInIntent, REQUEST_CODE_SIGN_IN)
+        if (!mainViewModel.signInClientIsInitialised())
+        {
+            mainViewModel.googleSignInClient = GoogleDocsManager.getGoogleSignInClient(this)
+            startActivityForResult(mainViewModel.googleSignInClient.signInIntent, REQUEST_CODE_SIGN_IN)
+        }
 
-        val fragmentDictionaryList = DictionaryListFragment.newInstance()
-        replaceFragment(fragmentDictionaryList)
+        if (supportFragmentManager.backStackEntryCount == 0)
+        {
+            val fragmentDictionaryList = DictionaryListFragment.newInstance()
+            replaceFragment(fragmentDictionaryList)
+        }
+
     }
 
     override fun onSuccessSignIn() {

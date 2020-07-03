@@ -27,9 +27,8 @@ class DictionaryWithQuestions (
 )
 
 enum class DictionaryType(var code: Int) {
-    MANUAL(0),
-    GOOGLE_DOCS_TEXT(1),
-    GOOGLE_DOCS_WORDS(2)
+    GOOGLE_DOCS_TEXT(0),
+    GOOGLE_DOCS_WORDS(1)
     ;
 
     companion object {

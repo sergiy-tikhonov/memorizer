@@ -7,14 +7,14 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.tikhonov.memorizer.R
 
-@Database(entities = [Question::class, Dictionary::class, QuestionMark::class], version = 8)
+@Database(entities = [Question::class, Dictionary::class, QuestionMark::class], version = 10)
 @TypeConverters(DataConverter::class, DictionaryTypeConverter::class)
 abstract class AppDatabase: RoomDatabase() {
 
     abstract fun questionDAO(): QuestionDao
     abstract fun dictionaryDAO(): DictionaryDao
 
-    companion object {
+    /*companion object {
         @Volatile
         private var INSTANCE: AppDatabase? = null
         fun getInstance(context: Context): AppDatabase {
@@ -36,6 +36,6 @@ abstract class AppDatabase: RoomDatabase() {
                 }
             }
         }
-    }
+    }*/
 
 }

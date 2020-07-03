@@ -31,4 +31,8 @@ interface QuestionDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertQuestionMark(questionMark: QuestionMark)
+
+    @Transaction
+    @Query("select question.*, sum(question_mark.mark) as mark, sum(question_mark.baseMark) as baseMark from question LEFT JOIN question_mark ON (question.dictionaryId=question_mark.dictionaryId and question.id=question_mark.id) where question.dictionaryId = :dictionaryId group by question.id,question.dictionaryId,question.answer,question.dateAdded,question.link,question.title")
+    suspend fun getAllQuestionsWithMarks(dictionaryId: Int): List<QuestionWithMarks>
 }

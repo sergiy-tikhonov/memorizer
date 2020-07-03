@@ -10,7 +10,8 @@
     <TextView
         android:id="@+id/textViewQuestion"
         android:layout_width="0dp"
-        android:textSize="30sp"
+        android:textSize="24sp"
+        android:maxLines="2"
         android:layout_height="wrap_content"
         android:layout_weight="10"
         tools:text="Пример ответа" />
@@ -18,8 +19,10 @@
     <TextView
         android:id="@+id/textViewStat"
         android:layout_width="0dp"
-        android:textSize="30sp"
         android:layout_height="wrap_content"
-        android:layout_weight="3"
+        android:layout_weight="2"
+        android:gravity="center_horizontal"
+        android:textSize="24sp"
         tools:text="10 %" />
+
 </LinearLayout>

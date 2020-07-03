@@ -15,17 +15,6 @@ import org.koin.dsl.module
 class MemoApplication : Application(){
     override fun onCreate() {
         super.onCreate()
-        // Start Koin
-        /*startKoin{
-            androidLogger()
-            androidContext(this@MemoApplication)
-            modules(appModule)
-        }*/
     }
 }
 
-/*
-val appModule = module {
-    viewModel { QuestionViewModel() }
-    viewModel { SingleActivityViewModel() }
-}*/

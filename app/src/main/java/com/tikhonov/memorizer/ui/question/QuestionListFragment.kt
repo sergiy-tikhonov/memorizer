@@ -9,13 +9,16 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.tikhonov.memorizer.BaseFragment
 import com.tikhonov.memorizer.R
+import com.tikhonov.memorizer.SingleActivity
 import com.tikhonov.memorizer.data.AppDatabase
+import com.tikhonov.memorizer.data.DictionaryType
+import com.tikhonov.memorizer.data.Question
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.question_list_fragment.toolbar
 import kotlinx.android.synthetic.main.question_list_fragment.*
 
 @AndroidEntryPoint
-class QuestionListFragment : BaseFragment() {
+class QuestionListFragment : BaseFragment(), QuestionListAdapter.OnClickListener {
 
     companion object {
         fun newInstance() =
@@ -40,7 +43,7 @@ class QuestionListFragment : BaseFragment() {
             viewModel.getQuestions(requireArguments().getInt("dictionaryId"))
         }
 
-        val questionListAdapter = QuestionListAdapter()
+        val questionListAdapter = QuestionListAdapter(this)
         recViewQuestion.apply {
             adapter = questionListAdapter
             layoutManager = LinearLayoutManager(view.context)
@@ -61,6 +64,18 @@ class QuestionListFragment : BaseFragment() {
                 parentActivity.replaceFragment(fragmentDictionary)
         }*/
 
+    }
+
+    override fun onLongClick(question: Question) {
+        val parentActivity = requireActivity() as SingleActivity
+        val questionFragment =
+            QuestionFragment.newInstance()
+        val bundle = Bundle()
+        bundle.putInt("dictionaryId", question.dictionaryId)
+        bundle.putString("questionId", question.id)
+        bundle.putBoolean("textMode", viewModel.selectedDictionary!!.dictionaryType == DictionaryType.GOOGLE_DOCS_TEXT)
+        questionFragment.arguments = bundle
+        parentActivity.replaceFragment(questionFragment)
     }
 
 

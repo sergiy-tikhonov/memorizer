@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import com.tikhonov.memorizer.BaseFragment
 import com.tikhonov.memorizer.R
 import com.tikhonov.memorizer.SingleActivity
@@ -16,6 +17,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.dictionary_fragment.*
 import kotlinx.android.synthetic.main.toolbar.toolbar
 import java.util.*
+import androidx.lifecycle.Observer
 
 
 @AndroidEntryPoint
@@ -26,7 +28,7 @@ class DictionaryFragment : BaseFragment() {
             DictionaryFragment()
     }
 
-    val viewModel by activityViewModels<DictionaryListViewModel>()
+    val viewModel by viewModels<DictionaryViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,15 +41,18 @@ class DictionaryFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         super.setToolbar(toolbar = toolbar, showUpNavigation = true, showMenu = true)
 
-        viewModel.selectedDictionary?.let {
+        arguments?.let {
+            viewModel.getDictionary(it.getInt("dictionaryId"))
+        }
+
+        viewModel.selectedDictionary.observe(viewLifecycleOwner, Observer {
             editTextDescription.setText(it.description)
             editTextDictionaryName.setText(it.name)
             editTextDocumentId.setText(it.documentId)
             editTextCode.setText(it.id.toString())
-            btnManual.isChecked = it.dictionaryType == DictionaryType.MANUAL
             btnGoogleDocsText.isChecked = it.dictionaryType == DictionaryType.GOOGLE_DOCS_TEXT
             btnGoogleDocsWords.isChecked = it.dictionaryType == DictionaryType.GOOGLE_DOCS_WORDS
-        }
+        })
 
         buttonSave.setOnClickListener {
             val dictionary = Dictionary(
@@ -58,8 +63,7 @@ class DictionaryFragment : BaseFragment() {
                 documentId = editTextDocumentId.text.toString(),
                 dictionaryType = when (toggleGroup2.checkedButtonId) {
                     R.id.btnGoogleDocsText -> DictionaryType.GOOGLE_DOCS_TEXT
-                    R.id.btnGoogleDocsWords -> DictionaryType.GOOGLE_DOCS_WORDS
-                    else -> DictionaryType.MANUAL
+                    else  -> DictionaryType.GOOGLE_DOCS_WORDS
                 }
             )
             viewModel.saveDictionary(dictionary)

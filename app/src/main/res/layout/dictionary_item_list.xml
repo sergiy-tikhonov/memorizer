@@ -43,24 +43,11 @@
             tools:text="Dictionary description" />
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:orientation="horizontal"
         android:layout_height="wrap_content"
         >
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/buttonEdit"
-        android:layout_width="0dp"
-        style="@style/Widget.MaterialComponents.Button.TextButton"
-        android:layout_weight="1"
-        android:text="@string/edit"
-        android:layout_height="match_parent"/>
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/buttonDelete"
-            android:layout_width="0dp"
-            style="@style/Widget.MaterialComponents.Button.TextButton"
-            android:layout_weight="1"
-            android:text="@string/delete"
-            android:layout_height="match_parent"/>
+
         <com.google.android.material.button.MaterialButton
             android:id="@+id/buttonList"
             android:layout_width="0dp"
@@ -74,6 +61,18 @@
             style="@style/Widget.MaterialComponents.Button.TextButton"
             android:layout_weight="1"
             android:text="@string/train"
+            android:layout_height="match_parent"/>
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/buttonEdit"
+            android:layout_width="40dp"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            app:icon="@drawable/ic_edit"
+            android:layout_height="match_parent"/>
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/buttonDelete"
+            android:layout_width="40dp"
+            app:icon="@drawable/ic_delete"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
             android:layout_height="match_parent"/>
     </LinearLayout>
 

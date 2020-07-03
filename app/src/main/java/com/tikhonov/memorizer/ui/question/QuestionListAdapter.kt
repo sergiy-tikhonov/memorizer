@@ -9,27 +9,28 @@ import com.tikhonov.memorizer.R
 import com.tikhonov.memorizer.data.Dictionary
 import com.tikhonov.memorizer.data.DictionaryWithQuestions
 import com.tikhonov.memorizer.data.Question
+import com.tikhonov.memorizer.data.QuestionWithMarks
 
 
 //import com.tikhonov.memorizer.ui.question.QuestionListFragment.OnListFragmentInteractionListener
 import kotlinx.android.synthetic.main.dictionary_item_list.view.*
 import kotlinx.android.synthetic.main.question_list_item.view.*
 
-//class QuestionListAdapter(val listener: OnClickListener): RecyclerView.Adapter<QuestionListAdapter.QuestionViewHolder>() {
-class QuestionListAdapter: RecyclerView.Adapter<QuestionListAdapter.QuestionViewHolder>() {
+class QuestionListAdapter(val listener: OnClickListener): RecyclerView.Adapter<QuestionListAdapter.QuestionViewHolder>() {
+//class QuestionListAdapter: RecyclerView.Adapter<QuestionListAdapter.QuestionViewHolder>() {
 
 
 
     interface OnClickListener{
-        fun onClick(dictionary: Dictionary)
-        fun onEdit(dictionary: Dictionary)
-        fun onDelete(dictionary: Dictionary)
-        fun onTrain(dictionary: Dictionary)
+        fun onLongClick(question: Question)
+        //fun onEdit(dictionary: Dictionary)
+        //fun onDelete(dictionary: Dictionary)
+        //fun onTrain(dictionary: Dictionary)
     }
 
-    private var items = mutableListOf<Question>()
+    private var items = mutableListOf<QuestionWithMarks>()
 
-    fun setQuestionItems(questionList: List<Question>) {
+    fun setQuestionItems(questionList: List<QuestionWithMarks>) {
         items = questionList.toMutableList()
         notifyDataSetChanged()
     }
@@ -46,13 +47,15 @@ class QuestionListAdapter: RecyclerView.Adapter<QuestionListAdapter.QuestionView
 
     override fun onBindViewHolder(holder: QuestionViewHolder, position: Int) {
         holder.itemView.apply {
-            textViewQuestion.text = items[position].title
+            textViewQuestion.text = items[position].question.title
+            textViewStat.text = "${items[position].mark} / ${items[position].baseMark}"
             /*textViewItems.text = this.context.getString(R.string.items_count, items[position].questions.size)
             textViewDescription.text = items[position].dictionary.description*/
-            /*setOnClickListener {
-                listener.onClick(items[position].dictionary)
+            setOnLongClickListener {
+                listener.onLongClick(items[position].question)
+                false
             }
-            buttonEdit.setOnClickListener {
+           /* buttonEdit.setOnClickListener {
                 listener.onEdit(items[position].dictionary)
             }
             buttonDelete.setOnClickListener {

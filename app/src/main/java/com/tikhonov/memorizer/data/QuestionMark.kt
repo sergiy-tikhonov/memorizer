@@ -1,10 +1,12 @@
 package com.tikhonov.memorizer.data
 
 import androidx.room.Entity
+import androidx.room.PrimaryKey
 import java.util.*
 
-@Entity(tableName = "question_mark", primaryKeys = ["id", "dictionaryId"])
+@Entity(tableName = "question_mark")
 data class QuestionMark (
+    @PrimaryKey(autoGenerate = true) var  uid: Int = 0,
     var id: String = "",
     var dictionaryId: Int,
     var date: Date,

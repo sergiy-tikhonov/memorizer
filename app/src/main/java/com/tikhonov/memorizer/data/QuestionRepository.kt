@@ -39,4 +39,8 @@ class QuestionRepository @Inject constructor(val questionDao: QuestionDao) {
     suspend fun insertQuestionMark(questionMark: QuestionMark) {
         return questionDao.insertQuestionMark(questionMark)
     }
+
+    suspend fun getAllQuestionsWithMarks(dictionaryId: Int): List<QuestionWithMarks> {
+        return questionDao.getAllQuestionsWithMarks(dictionaryId)
+    }
 }

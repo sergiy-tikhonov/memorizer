@@ -3,8 +3,8 @@ package com.tikhonov.memorizer.ui.dictionary
 import android.os.Bundle
 import android.util.Log
 import android.view.*
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -16,9 +16,6 @@ import com.tikhonov.memorizer.ui.question.QuestionListFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.dictionary_list_fragment.*
 import kotlinx.android.synthetic.main.dictionary_list_fragment.toolbar
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 
 
 @AndroidEntryPoint
@@ -29,7 +26,7 @@ class DictionaryListFragment : BaseFragment() , DictionaryListAdapter.OnClickLis
             DictionaryListFragment()
     }
 
-    val viewModel by activityViewModels<DictionaryListViewModel>()
+    val viewModel by viewModels<DictionaryListViewModel>()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -48,7 +45,6 @@ class DictionaryListFragment : BaseFragment() , DictionaryListAdapter.OnClickLis
             val dictionariesWithGoogleWords = viewModel.dictionaryList.value?.filter { it.dictionary.dictionaryType == DictionaryType.GOOGLE_DOCS_WORDS }
             dictionariesWithGoogleWords?.let {
                 for (dictionary in it) {
-                    Log.v("DEBUG", "dictionary with words: $dictionary")
                     viewModel.syncDictionaryWords(dictionary.dictionary)
                 }
             }
@@ -96,6 +92,9 @@ class DictionaryListFragment : BaseFragment() , DictionaryListAdapter.OnClickLis
         viewModel.selectedDictionary = dictionary
         val parentActivity = requireActivity() as SingleActivity
         val fragmentDictionary = DictionaryFragment.newInstance()
+        fragmentDictionary.arguments =  Bundle().apply {
+            putInt("dictionaryId", dictionary.id)
+        }
         parentActivity.replaceFragment(fragmentDictionary)
     }
 
@@ -103,9 +102,10 @@ class DictionaryListFragment : BaseFragment() , DictionaryListAdapter.OnClickLis
         val parentActivity = requireActivity() as SingleActivity
         val questionFragment =
             QuestionFragment.newInstance()
-        val bundle = Bundle()
-        bundle.putInt("dictionaryId", dictionary.id)
-        questionFragment.arguments = bundle
+        questionFragment.arguments = Bundle().apply {
+            putInt("dictionaryId", dictionary.id)
+            putBoolean("textMode", dictionary.dictionaryType == DictionaryType.GOOGLE_DOCS_TEXT)
+        }
         parentActivity.replaceFragment(questionFragment)
     }
 
@@ -115,6 +115,7 @@ class DictionaryListFragment : BaseFragment() , DictionaryListAdapter.OnClickLis
             QuestionListFragment.newInstance()
         val bundle = Bundle()
         bundle.putInt("dictionaryId", dictionary.id)
+        bundle.putBoolean("textMode", dictionary.dictionaryType == DictionaryType.GOOGLE_DOCS_TEXT)
         questionListFragment.arguments = bundle
         parentActivity.replaceFragment(questionListFragment)
     }

@@ -22,11 +22,6 @@ class DictionaryListViewModel @ViewModelInject constructor(
     val dictionaryList = dictionaryRepository.getDictionariesLiveData()
     var selectedDictionary: Dictionary? = null
 
-    fun saveDictionary(dictionary: Dictionary) {
-        viewModelScope.launch {
-            dictionaryRepository.insert(dictionary)
-        }
-    }
 
     fun deleteDictionary(dictionary: Dictionary) {
         viewModelScope.launch {

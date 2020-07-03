@@ -7,17 +7,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.text.HtmlCompat
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import kotlinx.android.synthetic.main.question_fragment.*
+import kotlinx.android.synthetic.main.question_fragment_text.*
 import androidx.fragment.app.viewModels
 import com.tikhonov.memorizer.BaseFragment
 import com.tikhonov.memorizer.EventObserver
 import com.tikhonov.memorizer.R
-import com.tikhonov.memorizer.SingleActivity
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.question_fragment.toolbar
-import kotlinx.android.synthetic.main.toolbar.*
+import kotlinx.android.synthetic.main.question_fragment_text.toolbar
 
 
 @AndroidEntryPoint
@@ -35,7 +32,7 @@ class QuestionFragment : BaseFragment() {
         super.setToolbar(toolbar = toolbar, showUpNavigation = true, showMenu = false)
 
         arguments?.let {
-            viewModel.getQuestions(requireArguments().getInt("dictionaryId"))
+            viewModel.getQuestions(requireArguments().getInt("dictionaryId"), requireArguments().getString("questionId"))
         }
 
         buttonNextQuestion.setOnClickListener {
@@ -56,6 +53,7 @@ class QuestionFragment : BaseFragment() {
         })
         viewModel.showAnswer.observe(viewLifecycleOwner, Observer {
             scrollViewAnswer.visibility = if (it) View.VISIBLE else View.INVISIBLE
+            ratingAnswer.visibility = if (it) View.VISIBLE else View.INVISIBLE
         })
         viewModel.message.observe(viewLifecycleOwner,
             EventObserver {
@@ -72,7 +70,11 @@ class QuestionFragment : BaseFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.question_fragment, container, false)
+        val layoutId = arguments?.let {
+            viewModel.getQuestions(it.getInt("dictionaryId"))
+            if (it.getBoolean("textMode")) R.layout.question_fragment_text else R.layout.question_fragment_words
+        } ?: R.layout.question_fragment_text
+        return inflater.inflate(layoutId, container, false)
     }
 
 /*    override fun onActivityResult(requestCode: Int, resultCode: Int, resultData: Intent?) {
