@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tikhonov.memorizer.Event
 import com.tikhonov.memorizer.data.AppDatabase
+import com.tikhonov.memorizer.data.Dictionary
 import com.tikhonov.memorizer.data.Question
 import com.tikhonov.memorizer.data.QuestionMark
 import com.tikhonov.memorizer.data.QuestionRepository
@@ -18,19 +19,20 @@ class QuestionViewModel @ViewModelInject constructor(val questionRepository: Que
     val title = MutableLiveData("")
     var answer = MutableLiveData("")
     val question = MutableLiveData<Question>()
+    lateinit var dictionary: Dictionary
     val showAnswer = MutableLiveData(false)
 
     lateinit var questions: List<Question>
     val message = MutableLiveData(Event(""))
 
-    //fun getQuestions(db: AppDatabase, dictionaryId: Int) {
-    fun getQuestions(dictionaryId: Int, questionId: String? = null) {
+    fun setParams(paramDictionary: Dictionary, paramQuestion: Question?) {
+        this.dictionary = paramDictionary
         viewModelScope.launch {
-            questions = questionRepository.getAllQuestions(dictionaryId)
-            if (questionId == null)
+            questions = questionRepository.getAllQuestions(dictionaryId = paramDictionary.id)
+            if (paramQuestion == null)
                 nextQuestion()
             else
-                question.postValue(questions.find { it.id == questionId })
+                question.postValue(paramQuestion)
         }
     }
 
@@ -44,7 +46,6 @@ class QuestionViewModel @ViewModelInject constructor(val questionRepository: Que
         showAnswer.postValue(true)
     }
 
-    //fun markAnswer(db: AppDatabase, mark: Int) {
     fun markAnswer(mark: Int) {
         val questionMark = QuestionMark(
             id = question.value!!.id,
@@ -54,7 +55,6 @@ class QuestionViewModel @ViewModelInject constructor(val questionRepository: Que
             mark = mark
         )
         viewModelScope.launch {
-            //db.questionDAO().insertQuestionMark(questionMark)
             questionRepository.insertQuestionMark(questionMark)
         }
     }

@@ -1,16 +1,13 @@
 package com.tikhonov.memorizer.ui.dictionary
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import com.tikhonov.memorizer.BaseFragment
+import com.tikhonov.memorizer.ui.BaseFragment
 import com.tikhonov.memorizer.R
-import com.tikhonov.memorizer.SingleActivity
-import com.tikhonov.memorizer.data.AppDatabase
 import com.tikhonov.memorizer.data.Dictionary
 import com.tikhonov.memorizer.data.DictionaryType
 import dagger.hilt.android.AndroidEntryPoint
@@ -18,17 +15,15 @@ import kotlinx.android.synthetic.main.dictionary_fragment.*
 import kotlinx.android.synthetic.main.toolbar.toolbar
 import java.util.*
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.navArgs
+import com.tikhonov.memorizer.util.setToolbar
 
 
 @AndroidEntryPoint
-class DictionaryFragment : BaseFragment() {
+class DictionaryFragment : Fragment() {
 
-    companion object {
-        fun newInstance() =
-            DictionaryFragment()
-    }
-
-    val viewModel by viewModels<DictionaryViewModel>()
+    private val viewModel by viewModels<DictionaryViewModel>()
+    private val args: DictionaryFragmentArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,10 +34,10 @@ class DictionaryFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        super.setToolbar(toolbar = toolbar, showUpNavigation = true, showMenu = true)
+        setToolbar(toolbar = toolbar, showMenu = true)
 
-        arguments?.let {
-            viewModel.getDictionary(it.getInt("dictionaryId"))
+        args.dictionary?.let {
+            viewModel.selectedDictionary.postValue(it)
         }
 
         viewModel.selectedDictionary.observe(viewLifecycleOwner, Observer {

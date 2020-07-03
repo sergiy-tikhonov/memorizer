@@ -2,30 +2,29 @@ package com.tikhonov.memorizer.ui.question
 
 import android.os.Bundle
 import android.view.*
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
-import com.tikhonov.memorizer.BaseFragment
+import com.tikhonov.memorizer.ui.BaseFragment
 import com.tikhonov.memorizer.R
-import com.tikhonov.memorizer.SingleActivity
-import com.tikhonov.memorizer.data.AppDatabase
+import com.tikhonov.memorizer.ui.SingleActivity
 import com.tikhonov.memorizer.data.DictionaryType
 import com.tikhonov.memorizer.data.Question
+import com.tikhonov.memorizer.util.setToolbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.question_list_fragment.toolbar
 import kotlinx.android.synthetic.main.question_list_fragment.*
 
 @AndroidEntryPoint
-class QuestionListFragment : BaseFragment(), QuestionListAdapter.OnClickListener {
-
-    companion object {
-        fun newInstance() =
-            QuestionListFragment()
-    }
+class QuestionListFragment : Fragment(), QuestionListAdapter.OnClickListener {
 
     private val viewModel by viewModels<QuestionListViewModel>()
+    private val args: QuestionListFragmentArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,11 +36,9 @@ class QuestionListFragment : BaseFragment(), QuestionListAdapter.OnClickListener
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
         super.onViewCreated(view, savedInstanceState)
-        super.setToolbar(toolbar = toolbar, showUpNavigation = true, showMenu = false)
+        setToolbar(toolbar = toolbar, showMenu = false)
 
-        arguments?.let {
-            viewModel.getQuestions(requireArguments().getInt("dictionaryId"))
-        }
+        viewModel.setDictionary(args.dictionary)
 
         val questionListAdapter = QuestionListAdapter(this)
         recViewQuestion.apply {
@@ -55,30 +52,9 @@ class QuestionListFragment : BaseFragment(), QuestionListAdapter.OnClickListener
             questionListAdapter.setQuestionItems(it)
         })
 
-        /*fabNewDictionary.setOnClickListener {
-
-            viewModel.selectedDictionary = null
-            val fragmentDictionary = DictionaryFragment.newInstance()
-            val parentActivity = requireActivity()
-            if (parentActivity is FragmentNavigator)
-                parentActivity.replaceFragment(fragmentDictionary)
-        }*/
-
     }
 
     override fun onLongClick(question: Question) {
-        val parentActivity = requireActivity() as SingleActivity
-        val questionFragment =
-            QuestionFragment.newInstance()
-        val bundle = Bundle()
-        bundle.putInt("dictionaryId", question.dictionaryId)
-        bundle.putString("questionId", question.id)
-        bundle.putBoolean("textMode", viewModel.selectedDictionary!!.dictionaryType == DictionaryType.GOOGLE_DOCS_TEXT)
-        questionFragment.arguments = bundle
-        parentActivity.replaceFragment(questionFragment)
+        findNavController().navigate(QuestionListFragmentDirections.questionListQuestionTrain(dictionary = viewModel.selectedDictionary, question = question))
     }
-
-
-
-
 }

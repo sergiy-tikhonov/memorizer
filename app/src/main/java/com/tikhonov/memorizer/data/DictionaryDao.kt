@@ -12,9 +12,6 @@ interface DictionaryDao {
     suspend fun delete(dictionary: Dictionary)
 
     @Query("select * from dictionary")
-    suspend fun getDictionaries(): List<Dictionary>
-
-    @Query("select * from dictionary")
     fun getDictionariesLiveData(): LiveData<List<DictionaryWithQuestions>>
 
     @Query("select * from dictionary where id = :dictionaryId")

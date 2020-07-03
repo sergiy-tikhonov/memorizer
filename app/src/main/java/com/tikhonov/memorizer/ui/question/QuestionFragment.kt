@@ -7,33 +7,32 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.text.HtmlCompat
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.question_fragment_text.*
 import androidx.fragment.app.viewModels
-import com.tikhonov.memorizer.BaseFragment
+import androidx.navigation.fragment.navArgs
+import com.tikhonov.memorizer.ui.BaseFragment
 import com.tikhonov.memorizer.EventObserver
 import com.tikhonov.memorizer.R
+import com.tikhonov.memorizer.data.DictionaryType
+import com.tikhonov.memorizer.util.setToolbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.question_fragment_text.toolbar
 
 
 @AndroidEntryPoint
-class QuestionFragment : BaseFragment() {
+class QuestionFragment : Fragment() {
 
     private val viewModel: QuestionViewModel by viewModels()
-
-    companion object {
-        fun newInstance() = QuestionFragment()
-    }
+    private val args: QuestionFragmentArgs by navArgs()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
         super.onViewCreated(view, savedInstanceState)
-        super.setToolbar(toolbar = toolbar, showUpNavigation = true, showMenu = false)
+        setToolbar(toolbar = toolbar, showMenu = false)
 
-        arguments?.let {
-            viewModel.getQuestions(requireArguments().getInt("dictionaryId"), requireArguments().getString("questionId"))
-        }
+        viewModel.setParams(args.dictionary, args.question)
 
         buttonNextQuestion.setOnClickListener {
             viewModel.nextQuestion()
@@ -70,34 +69,7 @@ class QuestionFragment : BaseFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val layoutId = arguments?.let {
-            viewModel.getQuestions(it.getInt("dictionaryId"))
-            if (it.getBoolean("textMode")) R.layout.question_fragment_text else R.layout.question_fragment_words
-        } ?: R.layout.question_fragment_text
-        return inflater.inflate(layoutId, container, false)
+        val layoutId = if (args.dictionary.dictionaryType == DictionaryType.GOOGLE_DOCS_TEXT) R.layout.question_fragment_text else R.layout.question_fragment_words
+            return inflater.inflate(layoutId, container, false)
     }
-
-/*    override fun onActivityResult(requestCode: Int, resultCode: Int, resultData: Intent?) {
-        when (requestCode) {
-            REQUEST_CODE_SIGN_IN -> if (resultCode == Activity.RESULT_OK && resultData != null) {
-                GoogleDocsManager.handleSignInResult(this, resultData)
-                Toast.makeText(this, "Logged in!", Toast.LENGTH_SHORT).show()
-            }
-            REQUEST_CODE_OPEN_DOCUMENT -> if (resultCode == Activity.RESULT_OK && resultData != null) {
-                val uri: Uri? = resultData.data
-                if (uri != null) {
-                    Log.v("DEBUG", "Uri:  ${uri.path}")
-                    val result = contentResolver.query(uri, null, null, null, null)
-                    result?.moveToFirst()
-                    Log.v("DEBUG", result?.getString(result.getColumnIndex("_display_name")))
-                    val a = 1
-                    //mainViewModel.loadDocument(db, DOCUMENT_ID_2)
-                }
-            }
-        }
-
-        super.onActivityResult(requestCode, resultCode, resultData)
-    }*/
-
-
 }

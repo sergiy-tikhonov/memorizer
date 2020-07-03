@@ -3,6 +3,7 @@ package com.tikhonov.memorizer.data
 import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.Relation
+import java.io.Serializable
 
 @Entity(tableName = "question", primaryKeys = ["id", "dictionaryId"])
 data class Question (
@@ -12,7 +13,7 @@ data class Question (
     var link: String = "",
     var dateAdded: String = "",
     var dictionaryId: Int
-)
+): Serializable
 
 class QuestionWithMarks (
     @Embedded

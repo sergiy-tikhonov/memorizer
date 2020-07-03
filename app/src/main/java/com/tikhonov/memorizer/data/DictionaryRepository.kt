@@ -13,10 +13,6 @@ class DictionaryRepository @Inject constructor(val dictionaryDao: DictionaryDao)
         dictionaryDao.delete(dictionary)
     }
 
-    suspend fun getDictionaries(): List<Dictionary> {
-        return dictionaryDao.getDictionaries()
-    }
-
     fun getDictionariesLiveData(): LiveData<List<DictionaryWithQuestions>> {
         return dictionaryDao.getDictionariesLiveData()
     }

@@ -1,32 +1,30 @@
 package com.tikhonov.memorizer.ui.dictionary
 
 import android.os.Bundle
-import android.util.Log
 import android.view.*
-import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.tikhonov.memorizer.*
 import com.tikhonov.memorizer.data.Dictionary
 import com.tikhonov.memorizer.data.DictionaryType
+import com.tikhonov.memorizer.ui.BaseFragment
+import com.tikhonov.memorizer.ui.SingleActivity
 import com.tikhonov.memorizer.ui.question.QuestionFragment
 import com.tikhonov.memorizer.ui.question.QuestionListFragment
+import com.tikhonov.memorizer.util.setToolbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.dictionary_list_fragment.*
 import kotlinx.android.synthetic.main.dictionary_list_fragment.toolbar
 
 
 @AndroidEntryPoint
-class DictionaryListFragment : BaseFragment() , DictionaryListAdapter.OnClickListener{
+class DictionaryListFragment : Fragment() , DictionaryListAdapter.OnClickListener{
 
-    companion object {
-        fun newInstance() =
-            DictionaryListFragment()
-    }
-
-    val viewModel by viewModels<DictionaryListViewModel>()
+    private val viewModel by viewModels<DictionaryListViewModel>()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -59,7 +57,7 @@ class DictionaryListFragment : BaseFragment() , DictionaryListAdapter.OnClickLis
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
         super.onViewCreated(view, savedInstanceState)
-        super.setToolbar(toolbar = toolbar, showUpNavigation = false, showMenu = true)
+        setToolbar(toolbar = toolbar, showMenu = true)
 
         val dictionaryListAdapter =
             DictionaryListAdapter(this)
@@ -74,53 +72,22 @@ class DictionaryListFragment : BaseFragment() , DictionaryListAdapter.OnClickLis
         })
 
         fabNewDictionary.setOnClickListener {
-
-            viewModel.selectedDictionary = null
-            val fragmentDictionary = DictionaryFragment.newInstance()
-            val parentActivity = requireActivity()
-            if (parentActivity is FragmentNavigator)
-                parentActivity.replaceFragment(fragmentDictionary)
+            findNavController().navigate(DictionaryListFragmentDirections.dictionaryListDictionaryDetails(dictionary = null))
         }
 
-    }
-
-    override fun onClick(dictionary: Dictionary) {
-        viewModel.selectedDictionary = dictionary
     }
 
     override fun onEdit(dictionary: Dictionary) {
-        viewModel.selectedDictionary = dictionary
-        val parentActivity = requireActivity() as SingleActivity
-        val fragmentDictionary = DictionaryFragment.newInstance()
-        fragmentDictionary.arguments =  Bundle().apply {
-            putInt("dictionaryId", dictionary.id)
-        }
-        parentActivity.replaceFragment(fragmentDictionary)
+        findNavController().navigate(DictionaryListFragmentDirections.dictionaryListDictionaryDetails(dictionary = dictionary))
     }
 
     override fun onTrain(dictionary: Dictionary) {
-        val parentActivity = requireActivity() as SingleActivity
-        val questionFragment =
-            QuestionFragment.newInstance()
-        questionFragment.arguments = Bundle().apply {
-            putInt("dictionaryId", dictionary.id)
-            putBoolean("textMode", dictionary.dictionaryType == DictionaryType.GOOGLE_DOCS_TEXT)
-        }
-        parentActivity.replaceFragment(questionFragment)
+        findNavController().navigate(DictionaryListFragmentDirections.dictionaryListQuestionTrain(dictionary = dictionary, question = null))
     }
 
     override fun onList(dictionary: Dictionary) {
-        val parentActivity = requireActivity() as SingleActivity
-        val questionListFragment =
-            QuestionListFragment.newInstance()
-        val bundle = Bundle()
-        bundle.putInt("dictionaryId", dictionary.id)
-        bundle.putBoolean("textMode", dictionary.dictionaryType == DictionaryType.GOOGLE_DOCS_TEXT)
-        questionListFragment.arguments = bundle
-        parentActivity.replaceFragment(questionListFragment)
+        findNavController().navigate(DictionaryListFragmentDirections.dictionaryListQuestionList(dictionary = dictionary))
     }
-
-
 
     override fun onDelete(dictionary: Dictionary) {
         val builder = MaterialAlertDialogBuilder(requireContext())

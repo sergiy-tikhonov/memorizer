@@ -4,6 +4,7 @@ import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.Relation
+import java.io.Serializable
 import java.util.*
 
 @Entity(tableName = "dictionary")
@@ -14,7 +15,7 @@ data class Dictionary (
     var dictionaryType: DictionaryType,
     var documentId: String = "",
     var dateSync: Date
-)
+): Serializable
 
 class DictionaryWithQuestions (
     @Embedded

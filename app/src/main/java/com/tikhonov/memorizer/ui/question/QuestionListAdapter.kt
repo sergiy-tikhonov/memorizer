@@ -15,6 +15,8 @@ import com.tikhonov.memorizer.data.QuestionWithMarks
 //import com.tikhonov.memorizer.ui.question.QuestionListFragment.OnListFragmentInteractionListener
 import kotlinx.android.synthetic.main.dictionary_item_list.view.*
 import kotlinx.android.synthetic.main.question_list_item.view.*
+import kotlin.math.max
+import kotlin.math.min
 
 class QuestionListAdapter(val listener: OnClickListener): RecyclerView.Adapter<QuestionListAdapter.QuestionViewHolder>() {
 //class QuestionListAdapter: RecyclerView.Adapter<QuestionListAdapter.QuestionViewHolder>() {
@@ -48,7 +50,9 @@ class QuestionListAdapter(val listener: OnClickListener): RecyclerView.Adapter<Q
     override fun onBindViewHolder(holder: QuestionViewHolder, position: Int) {
         holder.itemView.apply {
             textViewQuestion.text = items[position].question.title
-            textViewStat.text = "${items[position].mark} / ${items[position].baseMark}"
+            val mark = min(items[position].mark, 100)
+            //textViewStat.text = "${items[position].mark} / ${items[position].baseMark}"
+            textViewStat.text = "$mark %"
             /*textViewItems.text = this.context.getString(R.string.items_count, items[position].questions.size)
             textViewDescription.text = items[position].dictionary.description*/
             setOnLongClickListener {

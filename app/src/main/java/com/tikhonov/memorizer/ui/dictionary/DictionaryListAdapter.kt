@@ -12,10 +12,7 @@ import kotlinx.android.synthetic.main.dictionary_item_list.view.*
 
 class DictionaryListAdapter(val listener: OnClickListener): RecyclerView.Adapter<DictionaryListAdapter.DictionaryViewHolder>() {
 
-
-
     interface OnClickListener{
-        fun onClick(dictionary: Dictionary)
         fun onEdit(dictionary: Dictionary)
         fun onDelete(dictionary: Dictionary)
         fun onTrain(dictionary: Dictionary)
@@ -44,9 +41,6 @@ class DictionaryListAdapter(val listener: OnClickListener): RecyclerView.Adapter
             textViewDictionaryName.text = items[position].dictionary.name
             textViewItems.text = this.context.getString(R.string.items_count, items[position].questions.size)
             textViewDescription.text = items[position].dictionary.description
-            setOnClickListener {
-                listener.onClick(items[position].dictionary)
-            }
             buttonEdit.setOnClickListener {
                 listener.onEdit(items[position].dictionary)
             }

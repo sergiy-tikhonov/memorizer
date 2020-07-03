@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation"
+    app:startDestination="@id/dictionaryListFragment">
+
+    <fragment
+        android:id="@+id/dictionaryListFragment"
+        android:name="com.tikhonov.memorizer.ui.dictionary.DictionaryListFragment"
+        android:label="dictionary_list_fragment"
+        tools:layout="@layout/dictionary_list_fragment" >
+        <action
+            android:id="@+id/dictionaryList_dictionaryDetails"
+            app:destination="@id/dictionaryFragment" />
+        <action
+            android:id="@+id/dictionaryList_questionList"
+            app:destination="@id/questionListFragment" />
+        <action
+            android:id="@+id/dictionaryList_questionTrain"
+            app:destination="@id/questionFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/dictionaryFragment"
+        android:name="com.tikhonov.memorizer.ui.dictionary.DictionaryFragment"
+        android:label="dictionary_fragment"
+        tools:layout="@layout/dictionary_fragment" >
+        <argument
+            android:name="dictionary"
+            app:argType="com.tikhonov.memorizer.data.Dictionary"
+            app:nullable="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/questionListFragment"
+        android:name="com.tikhonov.memorizer.ui.question.QuestionListFragment"
+        android:label="question_list_fragment"
+        tools:layout="@layout/question_list_fragment" >
+        <action
+            android:id="@+id/questionList_questionTrain"
+            app:destination="@id/questionFragment" />
+        <argument
+            android:name="dictionary"
+            app:argType="com.tikhonov.memorizer.data.Dictionary" />
+    </fragment>
+    <fragment
+        android:id="@+id/questionFragment"
+        android:name="com.tikhonov.memorizer.ui.question.QuestionFragment"
+        android:label="question_fragment_text"
+        tools:layout="@layout/question_fragment_text" >
+        <argument
+            android:name="dictionary"
+            app:argType="com.tikhonov.memorizer.data.Dictionary" />
+        <argument
+            android:name="question"
+            app:argType="com.tikhonov.memorizer.data.Question"
+            app:nullable="true" />
+    </fragment>
+</navigation>

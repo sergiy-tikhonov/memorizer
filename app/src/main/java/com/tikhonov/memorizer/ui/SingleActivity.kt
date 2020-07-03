@@ -1,4 +1,4 @@
-package com.tikhonov.memorizer
+package com.tikhonov.memorizer.ui
 
 import android.app.Activity
 import android.content.Intent
@@ -6,18 +6,20 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.viewModels
-import androidx.fragment.app.Fragment
-import com.tikhonov.memorizer.ui.dictionary.DictionaryListFragment
+import com.tikhonov.memorizer.util.GoogleDocsManager
+import com.tikhonov.memorizer.R
 import dagger.hilt.android.AndroidEntryPoint
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import javax.inject.Inject
 
 const val REQUEST_CODE_SIGN_IN = 1
-const val REQUEST_CODE_OPEN_DOCUMENT = 2
 
 @AndroidEntryPoint
-class SingleActivity : AppCompatActivity(), FragmentNavigator, GoogleDocsManager.GoogleDocsManagerListener {
+class SingleActivity : AppCompatActivity(),
+    //FragmentNavigator,
+    GoogleDocsManager.GoogleDocsManagerListener {
 
     val mainViewModel: SingleActivityViewModel by viewModels()
+    @Inject lateinit var googleDocsManager: GoogleDocsManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,16 +27,14 @@ class SingleActivity : AppCompatActivity(), FragmentNavigator, GoogleDocsManager
 
         if (!mainViewModel.signInClientIsInitialised())
         {
-            mainViewModel.googleSignInClient = GoogleDocsManager.getGoogleSignInClient(this)
-            startActivityForResult(mainViewModel.googleSignInClient.signInIntent, REQUEST_CODE_SIGN_IN)
+            mainViewModel.googleSignInClient =
+                googleDocsManager.getGoogleSignInClient(
+                    this
+                )
+            startActivityForResult(mainViewModel.googleSignInClient.signInIntent,
+                REQUEST_CODE_SIGN_IN
+            )
         }
-
-        if (supportFragmentManager.backStackEntryCount == 0)
-        {
-            val fragmentDictionaryList = DictionaryListFragment.newInstance()
-            replaceFragment(fragmentDictionaryList)
-        }
-
     }
 
     override fun onSuccessSignIn() {
@@ -45,18 +45,13 @@ class SingleActivity : AppCompatActivity(), FragmentNavigator, GoogleDocsManager
         Toast.makeText(this, "Exception during Sign In: ${exception!!.message}", Toast.LENGTH_SHORT).show()
     }
 
-    override fun replaceFragment(fragment: Fragment){
-        val transaction = supportFragmentManager.beginTransaction()
-        transaction.replace(R.id.fragmentContainer, fragment)
-            .addToBackStack(null)
-            .commit()
-
-    }
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, resultData: Intent?) {
         when (requestCode) {
             REQUEST_CODE_SIGN_IN -> if (resultCode == Activity.RESULT_OK && resultData != null) {
-                GoogleDocsManager.handleSignInResult(this, resultData)
+                googleDocsManager.handleSignInResult(
+                    this,
+                    resultData
+                )
                 Toast.makeText(this, "Logged in!", Toast.LENGTH_SHORT).show()
             }
         }

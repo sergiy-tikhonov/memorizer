@@ -20,9 +20,6 @@ interface QuestionDao {
     @Query("select * from question where dictionaryId = :dictionaryId")
     suspend fun getAllQuestions(dictionaryId: Int): List<Question>
 
-    @Query("select id from question")
-    suspend fun getQuestionsId(): List<String>
-
     @Query("delete from question")
     suspend fun deleteQuestions()
 
@@ -33,6 +30,6 @@ interface QuestionDao {
     suspend fun insertQuestionMark(questionMark: QuestionMark)
 
     @Transaction
-    @Query("select question.*, sum(question_mark.mark) as mark, sum(question_mark.baseMark) as baseMark from question LEFT JOIN question_mark ON (question.dictionaryId=question_mark.dictionaryId and question.id=question_mark.id) where question.dictionaryId = :dictionaryId group by question.id,question.dictionaryId,question.answer,question.dateAdded,question.link,question.title")
+    @Query("select question.*, sum(question_mark.mark/question_mark.baseMark*5) as mark, sum(question_mark.baseMark) as baseMark from question LEFT JOIN question_mark ON (question.dictionaryId=question_mark.dictionaryId and question.id=question_mark.id) where question.dictionaryId = :dictionaryId group by question.id,question.dictionaryId,question.answer,question.dateAdded,question.link,question.title")
     suspend fun getAllQuestionsWithMarks(dictionaryId: Int): List<QuestionWithMarks>
 }

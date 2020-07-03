@@ -1,4 +1,4 @@
-package com.tikhonov.memorizer
+package com.tikhonov.memorizer.util
 
 import android.content.Context
 import android.content.Intent
@@ -16,14 +16,17 @@ import com.google.api.services.docs.v1.model.Document
 import com.google.api.services.docs.v1.model.ParagraphElement
 import com.google.api.services.drive.Drive
 import com.google.api.services.drive.DriveScopes
-import com.tikhonov.memorizer.data.AppDatabase
+import com.tikhonov.memorizer.R
 import com.tikhonov.memorizer.data.Question
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.util.*
 import javax.inject.Inject
+import javax.inject.Singleton
 
-object GoogleDocsManager {
+@Singleton
+class GoogleDocsManager @Inject constructor(@ApplicationContext val appContext: Context) {
 
     var googleSignInClient: GoogleSignInClient? = null
     var googleDriveService: Drive? = null
@@ -53,7 +56,7 @@ object GoogleDocsManager {
 
                 // Use the authenticated account to sign in to the Drive service.
                 val credential: GoogleAccountCredential = GoogleAccountCredential.usingOAuth2(
-                    context, Collections.singleton(DriveScopes.DRIVE_FILE)
+                    appContext, Collections.singleton(DriveScopes.DRIVE_FILE)
                 )
                 credential.selectedAccount = googleAccount.account
                 googleDriveService = Drive.Builder(
@@ -77,64 +80,16 @@ object GoogleDocsManager {
             }
     }
 
-    fun getIntentForGoogleDocsPicker(): Intent {
-        //if (googleDriveService != null) {
-            //Log.d(FragmentActivity.TAG, "Opening file picker.")
-            //val pickerIntent: Intent = mDriveServiceHelper.createFilePickerIntent()
-
-            /* val builder = OpenFileActivityOptions.Builder()
-             if (config.mimeTypes != null) {
-                 builder.setMimeType(config.mimeTypes)
-             } else {
-                 builder.setMimeType(documentMimeTypes)
-             }
-             if (config.activityTitle != null && config.activityTitle.isNotEmpty()) {
-                 builder.setActivityTitle(config.activityTitle)
-             }
-             if (driveId != null) {
-                 builder.setActivityStartFolder(driveId)
-             }
-             val openOptions = builder.build()*/
-
-
-            val pickerIntent = Intent(Intent.ACTION_OPEN_DOCUMENT)
-            //val pickerIntent = Intent(Intent.ACTION_GET_CONTENT)
-            //pickerIntent.addCategory(Intent.CATEGORY_OPENABLE)
-            //pickerIntent.flags = Intent.
-            pickerIntent.type = "*/*"
-            //pickerIntent.type = "application/vnd.google-apps.document"
-            val mimeTypes = arrayOf(
-                //"vnd.google-apps.document"
-                "application/vnd.google-apps.document"
-                //"application/vnd.google-apps.file"
-            )
-            //pickerIntent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes)
-            pickerIntent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes)
-            return pickerIntent
-
-
-            // The result of the SAF Intent is handled in onActivityResult.
-            //if (context is AppCompatActivity)
-            //context.startActivityForResult(pickerIntent, REQUEST_CODE_OPEN_DOCUMENT)
-        }
-    //}
-
     private fun readParagraphElement(element: ParagraphElement): String? {
         val run = element.textRun
         var rawText = if (run == null || run.content == null) {
             // The TextRun can be null if there is an inline object.
             ""
         } else run.content
-        //rawText = rawText.replace("\n","<br>")
         if (run.textStyle.contains("bold"))
             rawText = "<b>$rawText</b>"
 
         return rawText
-        //run.textStyle.contains("bold")
-        /* return if (run == null || run.content == null) {
-             // The TextRun can be null if there is an inline object.
-             ""
-         } else run.content*/
     }
 
     suspend fun loadDocumentWords(documentId: String, dictionaryId: Int): List<Question> {
@@ -149,10 +104,6 @@ object GoogleDocsManager {
 
                 val question = Question(dictionaryId = dictionaryId)
                 for ((rowIndex, row) in currentTable.table.tableRows.withIndex()) {
-
-                    //val _number = 0
-                    //val _question = ""
-                    //val _answer = ""
                     val _number = row.tableCells[0].content[0].paragraph.elements[0].textRun.content.replace("\n", "").trim()
                     val _question = row.tableCells[1].content[0].paragraph.elements[0].textRun.content.replace("\n", "").trim()
                     val _answer = row.tableCells[2].content[0].paragraph.elements[0].textRun.content.replace("\n", "").trim()
@@ -160,55 +111,12 @@ object GoogleDocsManager {
                     question.id = _number
                     question.title = _question
                     question.answer = _answer
-                    //db.questionDAO().insertQuestion(question)
                     questionList.add(question)
-                    //Log.v("DEBUG", "words: $_number $_question  $_answer")
 
-
-                   /* var currentText = ""
-                    var isList = false
-                    var isListItem = false
-                    for (currentLine in row.tableCells)
-                        for (currentTextLine in currentLine.content) {
-                            //for (currentLine in row.tableCells[0].content) {
-
-                            isListItem = currentTextLine.paragraph.containsKey("bullet")
-                            for (currentTextParagraph in currentTextLine.paragraph.elements) {
-                                val someText = readParagraphElement(currentTextParagraph)
-                                if (!isList && isListItem) currentText += "<ul>"
-                                if (isListItem) {
-                                    currentText += "<li> $someText</li>"
-                                    isList = true
-                                }
-                                else
-                                {
-                                    currentText += someText
-                                    if (isList) currentText += "</ul>"
-                                    isList = false
-                                }
-                                Log.v("TestExample", "Text: ${someText}")
-                            }
-
-                        }
-
-                    when(rowIndex) {
-                        0 -> question.title = currentText
-                        1 -> question.answer = currentText
-                        3 -> question.link = currentText
-                        4 -> question.dateAdded = currentText
-                        5 -> question.id = currentText*/
                     }
-
-
-
                 }
-
-
-
             }
         return questionList
-
-        //}
     }
 
     suspend fun loadDocumentText(documentId: String, dictionaryId: Int): List<Question> {
@@ -238,7 +146,10 @@ object GoogleDocsManager {
 
                             isListItem = currentTextLine.paragraph.containsKey("bullet")
                             for (currentTextParagraph in currentTextLine.paragraph.elements) {
-                                val someText = readParagraphElement(currentTextParagraph)
+                                val someText =
+                                    readParagraphElement(
+                                        currentTextParagraph
+                                    )
                                 if (!isList && isListItem) currentText += "<ul>"
                                 if (isListItem) {
                                     currentText += "<li> $someText</li>"
@@ -267,20 +178,10 @@ object GoogleDocsManager {
                         4 -> question.dateAdded = currentText
                         5 -> question.id = currentText
                     }
-
-
-
                 }
-
                 questionList.add(question)
-                //db.questionDAO().insertQuestion(question)
-
             }
-
-
         }
-
         return questionList
     }
-
 }
