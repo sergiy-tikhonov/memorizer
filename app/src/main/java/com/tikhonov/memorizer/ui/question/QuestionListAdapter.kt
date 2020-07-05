@@ -14,15 +14,9 @@ import kotlinx.android.synthetic.main.question_list_item.view.*
 import kotlin.math.min
 
 class QuestionListAdapter(val listener: OnClickListener): RecyclerView.Adapter<QuestionListAdapter.QuestionViewHolder>() {
-//class QuestionListAdapter: RecyclerView.Adapter<QuestionListAdapter.QuestionViewHolder>() {
-
-
 
     interface OnClickListener{
         fun onLongClick(question: Question)
-        //fun onEdit(dictionary: Dictionary)
-        //fun onDelete(dictionary: Dictionary)
-        //fun onTrain(dictionary: Dictionary)
     }
 
     private var items = mutableListOf<QuestionWithMarks>()
@@ -46,23 +40,11 @@ class QuestionListAdapter(val listener: OnClickListener): RecyclerView.Adapter<Q
         holder.itemView.apply {
             textViewQuestion.text = items[position].question.title
             val mark = min(items[position].mark, 100)
-            //textViewStat.text = "${items[position].mark} / ${items[position].baseMark}"
             textViewStat.text = "$mark %"
-            /*textViewItems.text = this.context.getString(R.string.items_count, items[position].questions.size)
-            textViewDescription.text = items[position].dictionary.description*/
             setOnLongClickListener {
                 listener.onLongClick(items[position].question)
                 false
             }
-           /* buttonEdit.setOnClickListener {
-                listener.onEdit(items[position].dictionary)
-            }
-            buttonDelete.setOnClickListener {
-                listener.onDelete(items[position].dictionary)
-            }
-            buttonTrain.setOnClickListener {
-                listener.onTrain(items[position].dictionary)
-            }*/
         }
 
     }

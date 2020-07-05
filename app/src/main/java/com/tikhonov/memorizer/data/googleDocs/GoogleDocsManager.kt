@@ -1,8 +1,7 @@
-package com.tikhonov.memorizer.util
+package com.tikhonov.memorizer.data.googleDocs
 
 import android.content.Context
 import android.content.Intent
-import android.util.Log
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -17,6 +16,7 @@ import com.google.api.services.docs.v1.model.ParagraphElement
 import com.google.api.services.drive.Drive
 import com.google.api.services.drive.DriveScopes
 import com.tikhonov.memorizer.R
+import com.tikhonov.memorizer.data.model.Dictionary
 import com.tikhonov.memorizer.data.model.Question
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
@@ -92,24 +92,24 @@ class GoogleDocsManager @Inject constructor(@ApplicationContext val appContext: 
         return rawText
     }
 
-    suspend fun loadDocumentWords(documentId: String, dictionaryId: Int): List<Question> {
+    suspend fun loadDocumentWords(dictionary: Dictionary): List<Question> {
         val questionList = mutableListOf<Question>()
         withContext(Dispatchers.IO) {
 
-            val doc: Document = googleDocsService!!.documents()[documentId].execute()
+            val doc: Document = googleDocsService!!.documents()[dictionary.documentId].execute()
 
             val tables = doc.body.content.filter { it.table != null }
 
             for ((tableIndex, currentTable) in tables.withIndex()) {
 
                 val question =
-                    Question(dictionaryId = dictionaryId)
+                    Question(dictionaryId = dictionary.id)
                 for ((rowIndex, row) in currentTable.table.tableRows.withIndex()) {
                     val _number = row.tableCells[0].content[0].paragraph.elements[0].textRun.content.replace("\n", "").trim()
                     val _question = row.tableCells[1].content[0].paragraph.elements[0].textRun.content.replace("\n", "").trim()
                     val _answer = row.tableCells[2].content[0].paragraph.elements[0].textRun.content.replace("\n", "").trim()
                     val question =
-                        Question(dictionaryId = dictionaryId)
+                        Question(dictionaryId = dictionary.id)
                     question.id = _number
                     question.title = _question
                     question.answer = _answer
@@ -121,32 +121,23 @@ class GoogleDocsManager @Inject constructor(@ApplicationContext val appContext: 
         return questionList
     }
 
-    suspend fun loadDocumentText(documentId: String, dictionaryId: Int): List<Question> {
+    suspend fun loadDocumentText(dictionary: Dictionary): List<Question> {
 
         val questionList = mutableListOf<Question>()
 
         withContext(Dispatchers.IO) {
 
-            val doc: Document = googleDocsService!!.documents()[documentId].execute()
-
-            Log.v("TestExample", "Title: ${doc.title}")
-
+            val doc: Document = googleDocsService!!.documents()[dictionary.documentId].execute()
             val tables = doc.body.content.filter { it.table != null }
-            Log.v("TestExample", "Items' size: ${tables.size}")
-
             for ((tableIndex, currentTable) in tables.withIndex()) {
-                Log.v("TestExample", "Question: $tableIndex}")
                 val question =
-                    Question(dictionaryId = dictionaryId)
+                    Question(dictionaryId = dictionary.id)
                 for ((rowIndex, row) in currentTable.table.tableRows.withIndex()) {
-                    Log.v("TestExample", "Index: $rowIndex}")
                     var currentText = ""
                     var isList = false
                     var isListItem = false
                     for (currentLine in row.tableCells)
                         for (currentTextLine in currentLine.content) {
-                            //for (currentLine in row.tableCells[0].content) {
-
                             isListItem = currentTextLine.paragraph.containsKey("bullet")
                             for (currentTextParagraph in currentTextLine.paragraph.elements) {
                                 val someText =
@@ -164,7 +155,6 @@ class GoogleDocsManager @Inject constructor(@ApplicationContext val appContext: 
                                     if (isList) currentText += "</ul>"
                                     isList = false
                                 }
-                                Log.v("TestExample", "Text: ${someText}")
                             }
 
                         }

@@ -9,6 +9,7 @@ import com.tikhonov.memorizer.data.model.Dictionary
 import com.tikhonov.memorizer.data.model.Question
 import com.tikhonov.memorizer.data.model.QuestionMark
 import com.tikhonov.memorizer.data.repository.QuestionRepository
+import com.tikhonov.memorizer.util.BASE_QUESTION_MARK
 import kotlinx.coroutines.launch
 import java.util.*
 import kotlin.random.Random
@@ -49,7 +50,7 @@ class QuestionViewModel @ViewModelInject constructor(val questionRepository: Que
             id = question.value!!.id,
             dictionaryId = question.value!!.dictionaryId,
             date = Date(),
-            baseMark = 5,
+            baseMark = BASE_QUESTION_MARK,
             mark = mark
         )
         viewModelScope.launch {

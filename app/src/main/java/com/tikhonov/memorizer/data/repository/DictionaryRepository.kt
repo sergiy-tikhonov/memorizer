@@ -1,13 +1,12 @@
 package com.tikhonov.memorizer.data.repository
 
 import androidx.lifecycle.LiveData
-import com.tikhonov.memorizer.data.datasource.DictionaryDatasource
-import com.tikhonov.memorizer.data.room.DictionaryDao
+import com.tikhonov.memorizer.data.datasource.DictionaryDataSource
 import com.tikhonov.memorizer.data.model.Dictionary
 import com.tikhonov.memorizer.data.model.DictionaryWithQuestions
 import javax.inject.Inject
 
-class DictionaryRepository @Inject constructor(val dictionaryDataSourse: DictionaryDatasource){
+class DictionaryRepository @Inject constructor(val dictionaryDataSourse: DictionaryDataSource){
 
     suspend fun insert(dictionary: Dictionary) {
         dictionaryDataSourse.insert(dictionary)

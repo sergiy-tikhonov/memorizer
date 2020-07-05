@@ -1,30 +1,30 @@
 package com.tikhonov.memorizer.data.repository
 
-import com.tikhonov.memorizer.data.room.QuestionDao
+import com.tikhonov.memorizer.data.datasource.QuestionDataSource
 import com.tikhonov.memorizer.data.model.Question
 import com.tikhonov.memorizer.data.model.QuestionMark
 import com.tikhonov.memorizer.data.model.QuestionWithMarks
 import javax.inject.Inject
 
-class QuestionRepository @Inject constructor(val questionDao: QuestionDao) {
+class QuestionRepository @Inject constructor(val questionDataSource: QuestionDataSource) {
 
     suspend fun insertQuestionList(questionList: List<Question>) {
-        questionDao.insertQuestionList(questionList)
+        questionDataSource.insertQuestionList(questionList)
     }
 
     suspend fun deleteQuestionsWithDocumentId(dictionaryId: Int) {
-        questionDao.deleteQuestionsWithDocumentId(dictionaryId)
+        questionDataSource.deleteQuestionsWithDocumentId(dictionaryId)
     }
 
     suspend fun getAllQuestions(dictionaryId: Int): List<Question> {
-        return questionDao.getAllQuestions(dictionaryId)
+        return questionDataSource.getAllQuestions(dictionaryId)
     }
 
     suspend fun insertQuestionMark(questionMark: QuestionMark) {
-        return questionDao.insertQuestionMark(questionMark)
+        return questionDataSource.insertQuestionMark(questionMark)
     }
 
     suspend fun getAllQuestionsWithMarks(dictionaryId: Int): List<QuestionWithMarks> {
-        return questionDao.getAllQuestionsWithMarks(dictionaryId)
+        return questionDataSource.getAllQuestionsWithMarks(dictionaryId)
     }
 }
