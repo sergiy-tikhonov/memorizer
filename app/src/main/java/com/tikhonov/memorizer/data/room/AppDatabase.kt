@@ -1,11 +1,11 @@
-package com.tikhonov.memorizer.data
+package com.tikhonov.memorizer.data.room
 
-import android.content.Context
 import androidx.room.Database
-import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import com.tikhonov.memorizer.R
+import com.tikhonov.memorizer.data.model.Dictionary
+import com.tikhonov.memorizer.data.model.Question
+import com.tikhonov.memorizer.data.model.QuestionMark
 
 @Database(entities = [Question::class, Dictionary::class, QuestionMark::class], version = 10)
 @TypeConverters(DataConverter::class, DictionaryTypeConverter::class)

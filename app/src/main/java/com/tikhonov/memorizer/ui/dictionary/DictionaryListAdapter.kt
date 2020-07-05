@@ -1,13 +1,12 @@
 package com.tikhonov.memorizer.ui.dictionary
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.tikhonov.memorizer.R
-import com.tikhonov.memorizer.data.Dictionary
-import com.tikhonov.memorizer.data.DictionaryWithQuestions
+import com.tikhonov.memorizer.data.model.Dictionary
+import com.tikhonov.memorizer.data.model.DictionaryWithQuestions
 import kotlinx.android.synthetic.main.dictionary_item_list.view.*
 
 class DictionaryListAdapter(val listener: OnClickListener): RecyclerView.Adapter<DictionaryListAdapter.DictionaryViewHolder>() {

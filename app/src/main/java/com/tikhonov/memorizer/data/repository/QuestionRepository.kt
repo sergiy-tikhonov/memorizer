@@ -1,5 +1,9 @@
-package com.tikhonov.memorizer.data
+package com.tikhonov.memorizer.data.repository
 
+import com.tikhonov.memorizer.data.room.QuestionDao
+import com.tikhonov.memorizer.data.model.Question
+import com.tikhonov.memorizer.data.model.QuestionMark
+import com.tikhonov.memorizer.data.model.QuestionWithMarks
 import javax.inject.Inject
 
 class QuestionRepository @Inject constructor(val questionDao: QuestionDao) {

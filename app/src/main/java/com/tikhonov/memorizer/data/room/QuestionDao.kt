@@ -1,6 +1,9 @@
-package com.tikhonov.memorizer.data
+package com.tikhonov.memorizer.data.room
 
 import androidx.room.*
+import com.tikhonov.memorizer.data.model.Question
+import com.tikhonov.memorizer.data.model.QuestionMark
+import com.tikhonov.memorizer.data.model.QuestionWithMarks
 
 @Dao
 interface QuestionDao {

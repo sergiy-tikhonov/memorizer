@@ -12,10 +12,9 @@ import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.question_fragment_text.*
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
-import com.tikhonov.memorizer.ui.BaseFragment
 import com.tikhonov.memorizer.EventObserver
 import com.tikhonov.memorizer.R
-import com.tikhonov.memorizer.data.DictionaryType
+import com.tikhonov.memorizer.data.model.DictionaryType
 import com.tikhonov.memorizer.util.setToolbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.question_fragment_text.toolbar

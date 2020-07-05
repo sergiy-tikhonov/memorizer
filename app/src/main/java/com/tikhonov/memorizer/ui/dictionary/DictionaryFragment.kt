@@ -6,10 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import com.tikhonov.memorizer.ui.BaseFragment
 import com.tikhonov.memorizer.R
-import com.tikhonov.memorizer.data.Dictionary
-import com.tikhonov.memorizer.data.DictionaryType
+import com.tikhonov.memorizer.data.model.Dictionary
+import com.tikhonov.memorizer.data.model.DictionaryType
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.dictionary_fragment.*
 import kotlinx.android.synthetic.main.toolbar.toolbar
@@ -58,7 +57,7 @@ class DictionaryFragment : Fragment() {
                 documentId = editTextDocumentId.text.toString(),
                 dictionaryType = when (toggleGroup2.checkedButtonId) {
                     R.id.btnGoogleDocsText -> DictionaryType.GOOGLE_DOCS_TEXT
-                    else  -> DictionaryType.GOOGLE_DOCS_WORDS
+                    else -> DictionaryType.GOOGLE_DOCS_WORDS
                 }
             )
             viewModel.saveDictionary(dictionary)

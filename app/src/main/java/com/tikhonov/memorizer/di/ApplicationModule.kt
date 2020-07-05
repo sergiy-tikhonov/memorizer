@@ -3,9 +3,12 @@ package com.tikhonov.memorizer.di
 import android.content.Context
 import androidx.room.Room
 import com.tikhonov.memorizer.R
-import com.tikhonov.memorizer.data.AppDatabase
-import com.tikhonov.memorizer.data.DictionaryDao
-import com.tikhonov.memorizer.data.QuestionDao
+import com.tikhonov.memorizer.data.datasource.DictionaryDatasource
+import com.tikhonov.memorizer.data.room.AppDatabase
+import com.tikhonov.memorizer.data.room.DictionaryDao
+import com.tikhonov.memorizer.data.room.DictionaryRoomDataSource
+import com.tikhonov.memorizer.data.room.QuestionDao
+import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -40,4 +43,6 @@ class ApplicationModule {
     fun providesDictionaryDao(appDatabase: AppDatabase): DictionaryDao {
         return appDatabase.dictionaryDAO()
     }
+
+
 }

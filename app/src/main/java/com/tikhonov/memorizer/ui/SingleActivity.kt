@@ -15,7 +15,6 @@ const val REQUEST_CODE_SIGN_IN = 1
 
 @AndroidEntryPoint
 class SingleActivity : AppCompatActivity(),
-    //FragmentNavigator,
     GoogleDocsManager.GoogleDocsManagerListener {
 
     val mainViewModel: SingleActivityViewModel by viewModels()
@@ -57,15 +56,5 @@ class SingleActivity : AppCompatActivity(),
         }
 
         super.onActivityResult(requestCode, resultCode, resultData)
-    }
-
-    override fun onBackPressed() {
-
-        val count = supportFragmentManager.backStackEntryCount
-        if (count == 0) {
-            super.onBackPressed()
-        } else {
-            supportFragmentManager.popBackStack()
-        }
     }
 }

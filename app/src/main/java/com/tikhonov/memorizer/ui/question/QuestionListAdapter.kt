@@ -4,18 +4,13 @@ import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import com.tikhonov.memorizer.R
-import com.tikhonov.memorizer.data.Dictionary
-import com.tikhonov.memorizer.data.DictionaryWithQuestions
-import com.tikhonov.memorizer.data.Question
-import com.tikhonov.memorizer.data.QuestionWithMarks
+import com.tikhonov.memorizer.data.model.Question
+import com.tikhonov.memorizer.data.model.QuestionWithMarks
 
 
 //import com.tikhonov.memorizer.ui.question.QuestionListFragment.OnListFragmentInteractionListener
-import kotlinx.android.synthetic.main.dictionary_item_list.view.*
 import kotlinx.android.synthetic.main.question_list_item.view.*
-import kotlin.math.max
 import kotlin.math.min
 
 class QuestionListAdapter(val listener: OnClickListener): RecyclerView.Adapter<QuestionListAdapter.QuestionViewHolder>() {

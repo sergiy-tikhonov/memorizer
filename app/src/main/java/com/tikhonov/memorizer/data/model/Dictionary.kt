@@ -1,4 +1,4 @@
-package com.tikhonov.memorizer.data
+package com.tikhonov.memorizer.data.model
 
 import androidx.room.Embedded
 import androidx.room.Entity

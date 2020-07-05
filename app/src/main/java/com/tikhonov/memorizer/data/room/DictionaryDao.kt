@@ -1,7 +1,9 @@
-package com.tikhonov.memorizer.data
+package com.tikhonov.memorizer.data.room
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
+import com.tikhonov.memorizer.data.model.Dictionary
+import com.tikhonov.memorizer.data.model.DictionaryWithQuestions
 
 @Dao
 interface DictionaryDao {

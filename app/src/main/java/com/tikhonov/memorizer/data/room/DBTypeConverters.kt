@@ -1,6 +1,7 @@
-package com.tikhonov.memorizer.data
+package com.tikhonov.memorizer.data.room
 
 import androidx.room.TypeConverter
+import com.tikhonov.memorizer.data.model.DictionaryType
 import java.util.*
 
 class DataConverter {

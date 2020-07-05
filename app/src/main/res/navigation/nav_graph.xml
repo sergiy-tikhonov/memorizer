@@ -27,7 +27,7 @@
         tools:layout="@layout/dictionary_fragment" >
         <argument
             android:name="dictionary"
-            app:argType="com.tikhonov.memorizer.data.Dictionary"
+            app:argType="com.tikhonov.memorizer.data.model.Dictionary"
             app:nullable="true" />
     </fragment>
     <fragment
@@ -40,7 +40,7 @@
             app:destination="@id/questionFragment" />
         <argument
             android:name="dictionary"
-            app:argType="com.tikhonov.memorizer.data.Dictionary" />
+            app:argType="com.tikhonov.memorizer.data.model.Dictionary" />
     </fragment>
     <fragment
         android:id="@+id/questionFragment"
@@ -49,10 +49,10 @@
         tools:layout="@layout/question_fragment_text" >
         <argument
             android:name="dictionary"
-            app:argType="com.tikhonov.memorizer.data.Dictionary" />
+            app:argType="com.tikhonov.memorizer.data.model.Dictionary" />
         <argument
             android:name="question"
-            app:argType="com.tikhonov.memorizer.data.Question"
+            app:argType="com.tikhonov.memorizer.data.model.Question"
             app:nullable="true" />
     </fragment>
 </navigation>

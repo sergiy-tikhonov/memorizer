@@ -17,7 +17,7 @@ import com.google.api.services.docs.v1.model.ParagraphElement
 import com.google.api.services.drive.Drive
 import com.google.api.services.drive.DriveScopes
 import com.tikhonov.memorizer.R
-import com.tikhonov.memorizer.data.Question
+import com.tikhonov.memorizer.data.model.Question
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -102,12 +102,14 @@ class GoogleDocsManager @Inject constructor(@ApplicationContext val appContext: 
 
             for ((tableIndex, currentTable) in tables.withIndex()) {
 
-                val question = Question(dictionaryId = dictionaryId)
+                val question =
+                    Question(dictionaryId = dictionaryId)
                 for ((rowIndex, row) in currentTable.table.tableRows.withIndex()) {
                     val _number = row.tableCells[0].content[0].paragraph.elements[0].textRun.content.replace("\n", "").trim()
                     val _question = row.tableCells[1].content[0].paragraph.elements[0].textRun.content.replace("\n", "").trim()
                     val _answer = row.tableCells[2].content[0].paragraph.elements[0].textRun.content.replace("\n", "").trim()
-                    val question = Question(dictionaryId = dictionaryId)
+                    val question =
+                        Question(dictionaryId = dictionaryId)
                     question.id = _number
                     question.title = _question
                     question.answer = _answer
@@ -134,7 +136,8 @@ class GoogleDocsManager @Inject constructor(@ApplicationContext val appContext: 
 
             for ((tableIndex, currentTable) in tables.withIndex()) {
                 Log.v("TestExample", "Question: $tableIndex}")
-                val question = Question(dictionaryId = dictionaryId)
+                val question =
+                    Question(dictionaryId = dictionaryId)
                 for ((rowIndex, row) in currentTable.table.tableRows.withIndex()) {
                     Log.v("TestExample", "Index: $rowIndex}")
                     var currentText = ""

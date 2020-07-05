@@ -1,8 +1,7 @@
-package com.tikhonov.memorizer.data
+package com.tikhonov.memorizer.data.model
 
 import androidx.room.Embedded
 import androidx.room.Entity
-import androidx.room.Relation
 import java.io.Serializable
 
 @Entity(tableName = "question", primaryKeys = ["id", "dictionaryId"])

@@ -5,14 +5,12 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tikhonov.memorizer.Event
-import com.tikhonov.memorizer.data.AppDatabase
-import com.tikhonov.memorizer.data.Dictionary
-import com.tikhonov.memorizer.data.Question
-import com.tikhonov.memorizer.data.QuestionMark
-import com.tikhonov.memorizer.data.QuestionRepository
+import com.tikhonov.memorizer.data.model.Dictionary
+import com.tikhonov.memorizer.data.model.Question
+import com.tikhonov.memorizer.data.model.QuestionMark
+import com.tikhonov.memorizer.data.repository.QuestionRepository
 import kotlinx.coroutines.launch
 import java.util.*
-import javax.inject.Inject
 import kotlin.random.Random
 
 class QuestionViewModel @ViewModelInject constructor(val questionRepository: QuestionRepository): ViewModel() {

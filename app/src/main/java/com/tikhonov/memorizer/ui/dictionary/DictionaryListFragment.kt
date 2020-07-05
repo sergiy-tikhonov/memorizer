@@ -9,12 +9,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.tikhonov.memorizer.*
-import com.tikhonov.memorizer.data.Dictionary
-import com.tikhonov.memorizer.data.DictionaryType
-import com.tikhonov.memorizer.ui.BaseFragment
-import com.tikhonov.memorizer.ui.SingleActivity
-import com.tikhonov.memorizer.ui.question.QuestionFragment
-import com.tikhonov.memorizer.ui.question.QuestionListFragment
+import com.tikhonov.memorizer.data.model.Dictionary
+import com.tikhonov.memorizer.data.model.DictionaryType
 import com.tikhonov.memorizer.util.setToolbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.dictionary_list_fragment.*

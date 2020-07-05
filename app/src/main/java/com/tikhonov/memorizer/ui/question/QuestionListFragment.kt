@@ -10,11 +10,8 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
-import com.tikhonov.memorizer.ui.BaseFragment
 import com.tikhonov.memorizer.R
-import com.tikhonov.memorizer.ui.SingleActivity
-import com.tikhonov.memorizer.data.DictionaryType
-import com.tikhonov.memorizer.data.Question
+import com.tikhonov.memorizer.data.model.Question
 import com.tikhonov.memorizer.util.setToolbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.question_list_fragment.toolbar
